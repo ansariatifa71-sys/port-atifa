@@ -1,7 +1,7 @@
 import Link from "next/link";
 export default function About() {
   return (
-    <section id="about" className="bg-[#393053] p-8 md:p-16">
+    <section id="about" className="bg-[#393053]/50 p-8 md:p-16">
       <p className="text-[#635985] text-md tracking-widest">01 / ABOUT ME</p>
       <h2 className="text-4xl md:text-6xl font-serif mt-5">
         A little about my world.

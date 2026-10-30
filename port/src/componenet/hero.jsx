@@ -18,7 +18,7 @@ export default function Hero() {
           </a>
         </div>
 
-        <div className="relative bg-[#393053] p-4 rounded-[40px] border border-[#635985]/40">
+        <div className="relative bg-[#393053]/25 p-4 rounded-[40px] border border-[#635985]/40">
           <img src="/me(2).png" alt="Atifa" className="w-full h-[400px] object-cover rounded-[30px]" />
           <p className="absolute bottom-8 left-8 bg-[#18122B]/90 p-4 rounded-xl text-[#635985]">
             LEARN · CREATE · GROW ✦
