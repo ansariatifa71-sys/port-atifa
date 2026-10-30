@@ -1,0 +1,506 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+/* Background video */
+.portfolio-page { isolation: isolate; }
+.portfolio-video { animation: atifaVideoZoom 22s ease-in-out infinite alternate; }
+.portfolio-overlay {
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(24,18,43,.4), rgba(24,18,43,.88)),
+    radial-gradient(circle at 75% 25%, rgba(99,89,133,.3), transparent 42%);
+}
+@keyframes atifaVideoZoom { from { transform: scale(1); } to { transform: scale(1.12); } }
+
+/* About/Skills section reveals when scrolled into view */
+.scroll-reveal {
+  opacity: 0;
+  filter: blur(16px);
+  transform: perspective(1200px) translateY(90px) scale(.92) rotateX(8deg);
+  transition: opacity 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1), filter .9s ease;
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform, filter;
+}
+.scroll-reveal-left { transform: perspective(1200px) translateX(-120px) scale(.9) rotateY(-12deg); }
+.scroll-reveal-right { transform: perspective(1200px) translateX(120px) scale(.9) rotateY(12deg); }
+.scroll-reveal[data-visible="true"] {
+  opacity: 1;
+  filter: blur(0);
+  transform: perspective(1200px) translate(0,0) scale(1) rotateX(0) rotateY(0);
+}
+
+/* Headings and copy stagger into view */
+.scroll-reveal[data-visible="true"] h1,
+.scroll-reveal[data-visible="true"] h2,
+.scroll-reveal[data-visible="true"] h3,
+.scroll-reveal[data-visible="true"] p { animation: atifaTextReveal .75s cubic-bezier(.16,1,.3,1) both; }
+.scroll-reveal[data-visible="true"] h1,
+.scroll-reveal[data-visible="true"] h2,
+.scroll-reveal[data-visible="true"] h3 { animation-delay: .12s; }
+.scroll-reveal[data-visible="true"] p:nth-of-type(1) { animation-delay: .22s; }
+.scroll-reveal[data-visible="true"] p:nth-of-type(2) { animation-delay: .38s; }
+.scroll-reveal[data-visible="true"] p:nth-of-type(3) { animation-delay: .54s; }
+@keyframes atifaTextReveal {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Skill cards bounce in one at a time */
+.scroll-reveal[data-visible="true"] article,
+.scroll-reveal[data-visible="true"] li,
+.scroll-reveal[data-visible="true"] [class*="card"],
+.scroll-reveal[data-visible="true"] [class*="skill"],
+.scroll-reveal[data-visible="true"] [class*="grid"] > * { animation: atifaSkillBounce .85s cubic-bezier(.2,1.3,.35,1) both; }
+.scroll-reveal[data-visible="true"] [class*="grid"] > *:nth-child(1) { animation-delay: .12s; }
+.scroll-reveal[data-visible="true"] [class*="grid"] > *:nth-child(2) { animation-delay: .26s; }
+.scroll-reveal[data-visible="true"] [class*="grid"] > *:nth-child(3) { animation-delay: .4s; }
+.scroll-reveal[data-visible="true"] [class*="grid"] > *:nth-child(4) { animation-delay: .54s; }
+.scroll-reveal[data-visible="true"] [class*="grid"] > *:nth-child(5) { animation-delay: .68s; }
+.scroll-reveal[data-visible="true"] [class*="grid"] > *:nth-child(6) { animation-delay: .82s; }
+@keyframes atifaSkillBounce {
+  0% { opacity: 0; transform: translateY(50px) scale(.75) rotate(4deg); filter: blur(8px); }
+  70% { opacity: 1; transform: translateY(-8px) scale(1.05) rotate(-1deg); filter: blur(0); }
+  86% { transform: translateY(3px) scale(.99) rotate(.5deg); }
+  100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); filter: blur(0); }
+}
+
+/* Images bounce into view */
+.scroll-reveal[data-visible="true"] img { animation: atifaImageBounce 1.2s cubic-bezier(.18,1.25,.4,1) .15s both; }
+@keyframes atifaImageBounce {
+  0% { opacity: 0; transform: translate(80px,-30px) rotate(7deg) scale(.8); filter: blur(10px); }
+  70% { opacity: 1; transform: translate(-7px,4px) rotate(-2deg) scale(1.04); filter: blur(0); }
+  86% { transform: translate(3px,-2px) rotate(1deg) scale(.99); }
+  100% { opacity: 1; transform: translate(0) rotate(0) scale(1); filter: blur(0); }
+}
+
+/* Hover lift */
+.contact-button,
+.scroll-reveal article,
+.scroll-reveal li,
+.scroll-reveal [class*="card"],
+.scroll-reveal [class*="skill"] { transition: transform .3s ease, box-shadow .3s ease; }
+.contact-button:hover,.hero-image {
+  display: block;
+  opacity: 0;
+  transform-origin: center;
+  animation: heroImageFlyIn 1.5s cubic-bezier(.18, 1.25, .4, 1) .35s both;
+  filter: drop-shadow(0 25px 45px rgba(0, 0, 0, .3));
+  will-change: transform, opacity, filter;
+}
+
+@keyframes heroImageFlyIn {
+  0% {
+    opacity: 0;
+    transform: translate(120px, -45px) rotate(10deg) scale(.72);
+    filter: blur(14px) drop-shadow(0 25px 45px transparent);
+  }
+
+  65% {
+    opacity: 1;
+    transform: translate(-10px, 5px) rotate(-2deg) scale(1.06);
+    filter: blur(0) drop-shadow(0 25px 45px rgba(0, 0, 0, .3));
+  }
+
+  82% {
+    transform: translate(5px, -2px) rotate(1deg) scale(.99);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(0) rotate(0) scale(1);
+    filter: blur(0) drop-shadow(0 25px 45px rgba(0, 0, 0, .3));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-image {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}/* Scroll ke saath page ke elements reveal hon */
+.portfolio-page section,
+.portfolio-page footer,
+.portfolio-page h1,
+.portfolio-page h2,
+.portfolio-page h3,
+.portfolio-page p,
+.portfolio-page article,
+.portfolio-page li,
+.portfolio-page img,
+.portfolio-page a,
+.portfolio-page button {
+  animation: atifaScrollReveal linear both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 80%;
+}
+
+@keyframes atifaScrollReveal {
+  from {
+    opacity: 0;
+    translate: 0 45px;
+    scale: .96;
+    filter: blur(8px);
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+    filter: blur(0);
+  }
+}
+
+/* Scroll reveal support na ho toh content visible rahe */
+@supports not (animation-timeline: view()) {
+  .portfolio-page section,
+  .portfolio-page footer,
+  .portfolio-page h1,
+  .portfolio-page h2,
+  .portfolio-page h3,
+  .portfolio-page p,
+  .portfolio-page article,
+  .portfolio-page li,
+  .portfolio-page img,
+  .portfolio-page a,
+  .portfolio-page button {
+    animation: none;
+    opacity: 1;
+    filter: none;
+    translate: none;
+    scale: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-page section,
+  .portfolio-page footer,
+  .portfolio-page h1,
+  .portfolio-page h2,
+  .portfolio-page h3,
+  .portfolio-page p,
+  .portfolio-page article,
+  .portfolio-page li,
+  .portfolio-page img,
+  .portfolio-page a,
+  .portfolio-page button {
+    animation: none;
+    opacity: 1;
+    filter: none;
+    translate: none;
+    scale: 1;
+  }
+}/* Hero image: side se enter, halka bounce aur settle */
+.reveal-2 img {
+  opacity: 0;
+  transform-origin: center;
+  animation: imageBounceIn 1.35s cubic-bezier(0.18, 1.25, 0.4, 1) 0.45s both;
+  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.28));
+}
+
+@keyframes imageBounceIn {
+  0% {
+    opacity: 0;
+    transform: translate(110px, -35px) rotate(9deg) scale(0.72);
+    filter: blur(12px) drop-shadow(0 24px 40px rgba(0, 0, 0, 0));
+  }
+  65% {
+    opacity: 1;
+    transform: translate(-9px, 5px) rotate(-2deg) scale(1.04);
+    filter: blur(0) drop-shadow(0 24px 40px rgba(0, 0, 0, 0.28));
+  }
+  82% {
+    transform: translate(4px, -2px) rotate(1deg) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0) scale(1);
+  }
+}
+
+/* About aur Skills cards ka staggered entrance */
+.reveal-3 article,
+.reveal-4 article,
+.reveal-3 .card,
+.reveal-4 .card {
+  animation: cardPopIn 0.75s cubic-bezier(0.2, 0.85, 0.3, 1.2) both;
+}
+
+.reveal-3 article:nth-child(2),
+.reveal-4 article:nth-child(2),
+.reveal-3 .card:nth-child(2),
+.reveal-4 .card:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.reveal-3 article:nth-child(3),
+.reveal-4 article:nth-child(3),
+.reveal-3 .card:nth-child(3),
+.reveal-4 .card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes cardPopIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Hover par cards lift honge */
+.reveal-3 article,
+.reveal-4 article,
+.reveal-3 .card,
+.reveal-4 .card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.reveal-3 article:hover,
+.reveal-4 article:hover,
+.reveal-3 .card:hover,
+.reveal-4 .card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+}
+
+/* Hero image par pointer le jaane par subtle zoom */
+.reveal-2 img:hover {
+  transition: transform 0.35s ease;
+  transform: scale(1.035);
+}
+.scroll-reveal article:hover,
+.scroll-reveal li:hover,
+.scroll-reveal [class*="card"]:hover,
+.scroll-reveal [class*="skill"]:hover {
+  transform: translateY(-9px) scale(1.03);
+  box-shadow: 0 18px 42px rgba(114,87,223,.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-page *, .portfolio-page *::before, .portfolio-page *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .scroll-reveal { opacity: 1 !important; filter: none !important; transform: none !important; }
+}
+.hero-image {
+  display: block;
+  opacity: 0;
+  transform-origin: center;
+  animation: heroImageFlyIn 1.5s cubic-bezier(.18, 1.25, .4, 1) .35s both;
+  filter: drop-shadow(0 25px 45px rgba(0, 0, 0, .3));
+  will-change: transform, opacity, filter;
+}
+
+@keyframes heroImageFlyIn {
+  0% {
+    opacity: 0;
+    transform: translate(120px, -45px) rotate(10deg) scale(.72);
+    filter: blur(14px) drop-shadow(0 25px 45px transparent);
+  }
+
+  65% {
+    opacity: 1;
+    transform: translate(-10px, 5px) rotate(-2deg) scale(1.06);
+    filter: blur(0) drop-shadow(0 25px 45px rgba(0, 0, 0, .3));
+  }
+
+  82% {
+    transform: translate(5px, -2px) rotate(1deg) scale(.99);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(0) rotate(0) scale(1);
+    filter: blur(0) drop-shadow(0 25px 45px rgba(0, 0, 0, .3));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-image {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}/* Scroll ke saath page ke elements reveal hon */
+.portfolio-page section,
+.portfolio-page footer,
+.portfolio-page h1,
+.portfolio-page h2,
+.portfolio-page h3,
+.portfolio-page p,
+.portfolio-page article,
+.portfolio-page li,
+.portfolio-page img,
+.portfolio-page a,
+.portfolio-page button {
+  animation: atifaScrollReveal linear both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 80%;
+}
+
+@keyframes atifaScrollReveal {
+  from {
+    opacity: 0;
+    translate: 0 45px;
+    scale: .96;
+    filter: blur(8px);
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+    filter: blur(0);
+  }
+}
+
+/* Scroll reveal support na ho toh content visible rahe */
+@supports not (animation-timeline: view()) {
+  .portfolio-page section,
+  .portfolio-page footer,
+  .portfolio-page h1,
+  .portfolio-page h2,
+  .portfolio-page h3,
+  .portfolio-page p,
+  .portfolio-page article,
+  .portfolio-page li,
+  .portfolio-page img,
+  .portfolio-page a,
+  .portfolio-page button {
+    animation: none;
+    opacity: 1;
+    filter: none;
+    translate: none;
+    scale: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-page section,
+  .portfolio-page footer,
+  .portfolio-page h1,
+  .portfolio-page h2,
+  .portfolio-page h3,
+  .portfolio-page p,
+  .portfolio-page article,
+  .portfolio-page li,
+  .portfolio-page img,
+  .portfolio-page a,
+  .portfolio-page button {
+    animation: none;
+    opacity: 1;
+    filter: none;
+    translate: none;
+    scale: 1;
+  }
+}/* Hero image: side se enter, halka bounce aur settle */
+.reveal-2 img {
+  opacity: 0;
+  transform-origin: center;
+  animation: imageBounceIn 1.35s cubic-bezier(0.18, 1.25, 0.4, 1) 0.45s both;
+  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.28));
+}
+
+@keyframes imageBounceIn {
+  0% {
+    opacity: 0;
+    transform: translate(110px, -35px) rotate(9deg) scale(0.72);
+    filter: blur(12px) drop-shadow(0 24px 40px rgba(0, 0, 0, 0));
+  }
+  65% {
+    opacity: 1;
+    transform: translate(-9px, 5px) rotate(-2deg) scale(1.04);
+    filter: blur(0) drop-shadow(0 24px 40px rgba(0, 0, 0, 0.28));
+  }
+  82% {
+    transform: translate(4px, -2px) rotate(1deg) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0) scale(1);
+  }
+}
+
+/* About aur Skills cards ka staggered entrance */
+.reveal-3 article,
+.reveal-4 article,
+.reveal-3 .card,
+.reveal-4 .card {
+  animation: cardPopIn 0.75s cubic-bezier(0.2, 0.85, 0.3, 1.2) both;
+}
+
+.reveal-3 article:nth-child(2),
+.reveal-4 article:nth-child(2),
+.reveal-3 .card:nth-child(2),
+.reveal-4 .card:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.reveal-3 article:nth-child(3),
+.reveal-4 article:nth-child(3),
+.reveal-3 .card:nth-child(3),
+.reveal-4 .card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes cardPopIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Hover par cards lift honge */
+.reveal-3 article,
+.reveal-4 article,
+.reveal-3 .card,
+.reveal-4 .card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.reveal-3 article:hover,
+.reveal-4 article:hover,
+.reveal-3 .card:hover,
+.reveal-4 .card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+}
+
+/* Hero image par pointer le jaane par subtle zoom */
+.reveal-2 img:hover {
+  transition: transform 0.35s ease;
+  transform: scale(1.035);
+}
